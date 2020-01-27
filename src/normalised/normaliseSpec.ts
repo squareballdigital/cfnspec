@@ -5,16 +5,24 @@ import { normaliseTypeSpec } from './normaliseTypeSpec';
 import { parseTypeName } from './TypeName';
 import { StringMap } from '../model/StringMap';
 import { AttributeSpecification } from '../model/AttributeSpecification';
+import { makeResolver } from './NameResolver';
 
 export function normaliseSpec(spec: CfnSpecification): TypeDefinition[] {
+  const resolve = makeResolver(spec);
+
   const propTypes = Object.entries(spec.PropertyTypes).map(([name, propSpec]) =>
-    normaliseTypeSpec(parseTypeName(name), propSpec, TypeSource.PropertyType),
+    normaliseTypeSpec(
+      parseTypeName(name),
+      propSpec,
+      TypeSource.PropertyType,
+      resolve,
+    ),
   );
 
   const resourceTypes = Object.entries(
     spec.ResourceTypes,
   ).map(([name, resourceSpec]) =>
-    normaliseTypeSpec({ name }, resourceSpec, TypeSource.ResourceType),
+    normaliseTypeSpec({ name }, resourceSpec, TypeSource.ResourceType, resolve),
   );
 
   const attribTypes = Object.entries(spec.ResourceTypes)
@@ -25,6 +33,7 @@ export function normaliseSpec(spec: CfnSpecification): TypeDefinition[] {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         { Properties: escapeAttribs(resourceSpec.Attributes!) },
         TypeSource.AttributeType,
+        resolve,
       ),
     );
 

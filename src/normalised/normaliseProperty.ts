@@ -1,6 +1,7 @@
 import { UpdateType } from '../model/UpdateType';
 import { DataTypeCommonSpec, normaliseDataType } from './normaliseDataType';
 import { PropertyDefinition } from './PropertyDefinition';
+import { NameResolver } from './NameResolver';
 
 export interface PropertyCommonSpec extends DataTypeCommonSpec {
   Documentation?: string;
@@ -12,8 +13,9 @@ export function normaliseProperty(
   name: string,
   spec: PropertyCommonSpec,
   namespace: string,
+  resolve: NameResolver,
 ): PropertyDefinition {
-  const type = normaliseDataType(spec, namespace);
+  const type = normaliseDataType(spec, namespace, resolve);
   if (!type) {
     throw new Error(`can't determine type of property ${namespace}.${name}`);
   }

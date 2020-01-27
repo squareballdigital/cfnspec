@@ -1,5 +1,6 @@
 import { PrimitiveType } from '../model/PrimitiveType';
 import { DataTypeKind, DataType, DataTypeRef } from './DataType';
+import { NameResolver } from './NameResolver';
 
 export interface DataTypeCommonSpec {
   DuplicatesAllowed?: boolean;
@@ -12,6 +13,7 @@ export interface DataTypeCommonSpec {
 export function normaliseDataType(
   spec: DataTypeCommonSpec,
   namespace: string,
+  resolve: NameResolver,
 ): DataType | undefined {
   let typeKind: DataTypeKind;
 
@@ -34,8 +36,7 @@ export function normaliseDataType(
     } else if (spec.Type) {
       typeRef = {
         isPrimitive: false,
-        name: spec.Type,
-        namespace,
+        ...resolve({ name: spec.Type, namespace }),
       };
     }
   } else {
@@ -47,8 +48,7 @@ export function normaliseDataType(
     } else if (spec.ItemType) {
       typeRef = {
         isPrimitive: false,
-        name: spec.ItemType,
-        namespace,
+        ...resolve({ name: spec.ItemType, namespace }),
       };
     }
   }
