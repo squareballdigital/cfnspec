@@ -1,9 +1,7 @@
 {
   "name": "@fmtk/cfnspec",
   "version": "0.1.4",
-  "main": "lib/bundle.js",
-  "module": "lib/bundle.esm.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/index.js",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
   "repository": "https://github.com/futurematik/cfnspec",
   "license": "MIT",
@@ -21,14 +19,14 @@
     "bumpfeat": "npm version minor && npm publish",
     "bumpfix": "npm version patch && npm publish",
     "bumpmajor": "npm version major && npm publish",
-    "compile": "rollup -c",
+    "compile": "tsc",
     "clean": "rm -rf lib/ dist/",
     "lint": "eslint src/ --ext=ts,tsx",
     "postversion": "git push --follow-tags",
     "prepare": "yarn build",
     "preversion": "yarn build",
     "test": "jest",
-    "watch": "yarn run compile -w"
+    "watch": "tsc -w --incremental"
   },
   "dependencies": {
     "@fmtk/validation": "^3.5.2"

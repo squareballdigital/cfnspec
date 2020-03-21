@@ -1,20 +1,82 @@
-export * from './model/AttributeSpecification';
-export * from './model/CfnSpecification';
-export * from './model/PrimitiveType';
-export * from './model/PropertySpecification';
-export * from './model/PropertyTypeSpecification';
-export * from './model/ResourceSpecification';
-export * from './model/StringMap';
-export * from './model/UpdateType';
+import http from 'http';
+import https from 'https';
+import zlib from 'zlib';
+import stream from 'stream';
+import { assertValid } from '@fmtk/validation';
+import {
+  CloudFormationSpec,
+  validateCloudFormationSpec,
+} from './CloudFormationSpec';
 
-export * from './normalised/DataType';
-export * from './normalised/normaliseDataType';
-export * from './normalised/normaliseProperty';
-export * from './normalised/normaliseSpec';
-export * from './normalised/normaliseTypeSpec';
-export * from './normalised/PropertyDefinition';
-export * from './normalised/TypeDefinition';
-export * from './normalised/TypeName';
-export * from './normalised/TypeSource';
+export const DefaultSpecUrl =
+  'https://d1uauaxba7bl26.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json';
 
-export * from './getLatestSpec';
+export async function getLatestSpec(
+  url = DefaultSpecUrl,
+  validate = true,
+): Promise<CloudFormationSpec> {
+  return new Promise((resolve, reject) => {
+    const data: Buffer[] = [];
+
+    const req = https.request(
+      url,
+      {
+        headers: {
+          'accept-encoding': 'deflate, gzip',
+        },
+      },
+      res => {
+        let reader: stream.Readable;
+        const encoding = getHeader(res.headers, 'content-encoding');
+
+        if (!encoding) {
+          reader = res;
+        } else if (encoding === 'gzip') {
+          reader = res.pipe(zlib.createGunzip());
+        } else if (encoding === 'deflate') {
+          reader = res.pipe(zlib.createInflate());
+        } else {
+          reject(new Error(`can't process encoding ${encoding}`));
+          return;
+        }
+
+        reader.on('data', chunk => {
+          data.push(chunk);
+        });
+
+        reader.on('end', () => {
+          try {
+            const str = Buffer.concat(data).toString();
+            const obj = JSON.parse(str);
+            resolve(
+              validate ? assertValid(obj, validateCloudFormationSpec) : obj,
+            );
+          } catch (err) {
+            reject(err);
+          }
+        });
+      },
+    );
+
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+function getHeader(
+  headers: http.IncomingHttpHeaders,
+  key: string,
+): string | undefined {
+  key = key.toLowerCase();
+
+  for (const header in headers) {
+    if (header.toLowerCase() === key) {
+      const value = headers[header];
+      if (Array.isArray(value)) {
+        return value.join(', ');
+      } else {
+        return value;
+      }
+    }
+  }
+}
