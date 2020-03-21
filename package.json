@@ -15,7 +15,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "yarn clean && yarn lint && yarn compile",
+    "build": "yarn clean && yarn lint && yarn compile && yarn test",
     "bumpfeat": "npm version minor && npm publish",
     "bumpfix": "npm version patch && npm publish",
     "bumpmajor": "npm version major && npm publish",

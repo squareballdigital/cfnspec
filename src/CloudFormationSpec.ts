@@ -20,7 +20,7 @@ export enum PrimitiveType {
 export enum UpdateType {
   Mutable = 'Mutable',
   Immutable = 'Immutable',
-  Conditional = 'Conditionl',
+  Conditional = 'Conditional',
 }
 
 export interface Dictionary<T> {
