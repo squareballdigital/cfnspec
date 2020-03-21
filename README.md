@@ -76,7 +76,7 @@ export enum PrimitiveType {
 export enum UpdateType {
   Mutable = 'Mutable',
   Immutable = 'Immutable',
-  Conditional = 'Conditionl',
+  Conditional = 'Conditional',
 }
 ```
 
