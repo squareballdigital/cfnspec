@@ -8,6 +8,8 @@ import {
   validateCloudFormationSpec,
 } from './CloudFormationSpec';
 
+export * from './CloudFormationSpec';
+
 export const DefaultSpecUrl =
   'https://d1uauaxba7bl26.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json';
 
