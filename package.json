@@ -1,6 +1,6 @@
 {
   "name": "@cfnboost/spec",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "main": "lib/index.js",
   "type": "module",
   "author": "Gordon Leigh",
