@@ -2,6 +2,7 @@
   "name": "@cfnboost/spec",
   "version": "0.2.4",
   "main": "lib/index.js",
+  "type": "module",
   "author": "Gordon Leigh",
   "repository": "https://github.com/cfnboost/spec",
   "license": "MIT",
@@ -34,7 +35,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.5",
     "prettier": "2.5.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.10"
   },
   "dependencies": {
     "@fmtk/decoders": "^0.4.3"
