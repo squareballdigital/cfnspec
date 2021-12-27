@@ -1,14 +1,13 @@
+import { ExtraFields } from '@fmtk/decoders';
 import 'jest';
-import { getLatestSpec, DefaultSpecUrl } from '.';
-import { validateCloudFormationSpec } from './CloudFormationSpec';
-import { ValidationMode } from '@fmtk/validation';
+import { DefaultSpecUrl, getLatestSpec } from '.';
+import { decodeCloudFormationSpec } from './CloudFormationSpec';
 
 describe('getLatestSpec', () => {
   it('it validates the current spec without failing', async () => {
     const spec = await getLatestSpec(DefaultSpecUrl, false);
-    const result = validateCloudFormationSpec({
-      value: spec,
-      mode: ValidationMode.Strict,
+    const result = decodeCloudFormationSpec(spec, {
+      extraFields: ExtraFields.Reject,
     });
 
     expect(result.ok).toBeTruthy();

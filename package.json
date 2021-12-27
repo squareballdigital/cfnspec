@@ -1,9 +1,9 @@
 {
-  "name": "@fmtk/cfnspec",
+  "name": "@cfnboost/spec",
   "version": "0.2.4",
   "main": "lib/index.js",
-  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
-  "repository": "https://github.com/futurematik/cfnspec",
+  "author": "Gordon Leigh",
+  "repository": "https://github.com/cfnboost/spec",
   "license": "MIT",
   "private": false,
   "publishConfig": {
@@ -15,34 +15,28 @@
     "dist/"
   ],
   "scripts": {
-    "build": "yarn clean && yarn lint && yarn compile && yarn test",
-    "bumpfeat": "npm version minor && npm publish",
-    "bumpfix": "npm version patch && npm publish",
-    "bumpmajor": "npm version major && npm publish",
+    "build": "npm run clean && npm run lint && npm run compile && npm run test",
     "compile": "tsc",
     "clean": "rm -rf lib/ dist/",
     "lint": "eslint src/ --ext=ts,tsx",
     "postversion": "git push --follow-tags",
-    "prepare": "yarn build",
-    "preversion": "yarn build",
     "test": "jest",
     "watch": "tsc -w --incremental"
   },
-  "dependencies": {
-    "@fmtk/validation": "^3.5.3"
-  },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "@types/node": "^13.9.2",
-    "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
-    "ts-jest": "^25.2.1",
+    "@sucrase/jest-plugin": "^2.2.0",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.4.5",
+    "prettier": "2.5.1",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@fmtk/decoders": "^0.4.3"
   }
 }

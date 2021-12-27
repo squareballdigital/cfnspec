@@ -1,11 +1,12 @@
 import {
-  is,
-  properties,
+  boolean,
+  enumValue,
+  object,
   optional,
-  bool,
+  record,
+  string,
   text,
-  dictionary,
-} from '@fmtk/validation';
+} from '@fmtk/decoders';
 
 export enum PrimitiveType {
   String = 'String',
@@ -50,34 +51,34 @@ export interface CloudFormationSpec {
   ResourceTypes: Dictionary<ResourceDefinition>;
 }
 
-export const validatePrimitiveType = is(...Object.values(PrimitiveType));
-export const validateUpdateType = is(...Object.values(UpdateType));
+export const decodePrimitiveType = enumValue(PrimitiveType);
+export const decodeUpdateType = enumValue(UpdateType);
 
 const typeDefinitionModel = {
-  AdditionalProperties: optional(bool()),
-  Documentation: optional(text()),
-  DuplicatesAllowed: optional(bool()),
-  ItemType: optional(text()),
-  PrimitiveItemType: optional(validatePrimitiveType),
-  PrimitiveType: optional(validatePrimitiveType),
-  Required: optional(bool()),
-  Type: optional(text()),
-  UpdateType: optional(validateUpdateType),
+  AdditionalProperties: optional(boolean),
+  Documentation: optional(string),
+  DuplicatesAllowed: optional(boolean),
+  ItemType: optional(string),
+  PrimitiveItemType: optional(decodePrimitiveType),
+  PrimitiveType: optional(decodePrimitiveType),
+  Required: optional(boolean),
+  Type: optional(string),
+  UpdateType: optional(decodeUpdateType),
 };
 
-export const validateTypeDefinition = properties<TypeDefinition>({
+export const decodeTypeDefinition = object<TypeDefinition>({
   ...typeDefinitionModel,
-  Properties: optional(dictionary(properties(typeDefinitionModel))),
+  Properties: optional(record(text, object(typeDefinitionModel))),
 });
 
-export const validateResourceDefinition = properties<ResourceDefinition>({
+export const decodeResourceDefinition = object<ResourceDefinition>({
   ...typeDefinitionModel,
-  Attributes: optional(dictionary(properties(typeDefinitionModel))),
-  Properties: optional(dictionary(properties(typeDefinitionModel))),
+  Attributes: optional(record(text, object(typeDefinitionModel))),
+  Properties: optional(record(text, object(typeDefinitionModel))),
 });
 
-export const validateCloudFormationSpec = properties<CloudFormationSpec>({
-  PropertyTypes: dictionary(validateTypeDefinition),
-  ResourceSpecificationVersion: text(),
-  ResourceTypes: dictionary(validateResourceDefinition),
+export const decodeCloudFormationSpec = object<CloudFormationSpec>({
+  PropertyTypes: record(text, decodeTypeDefinition),
+  ResourceSpecificationVersion: string,
+  ResourceTypes: record(text, decodeResourceDefinition),
 });

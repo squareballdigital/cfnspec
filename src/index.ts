@@ -1,11 +1,11 @@
+import { assert } from '@fmtk/decoders';
 import http from 'http';
 import https from 'https';
-import zlib from 'zlib';
 import stream from 'stream';
-import { assertValid } from '@fmtk/validation';
+import zlib from 'zlib';
 import {
   CloudFormationSpec,
-  validateCloudFormationSpec,
+  decodeCloudFormationSpec,
 } from './CloudFormationSpec';
 
 export * from './CloudFormationSpec';
@@ -27,7 +27,7 @@ export async function getLatestSpec(
           'accept-encoding': 'deflate, gzip',
         },
       },
-      res => {
+      (res) => {
         let reader: stream.Readable;
         const encoding = getHeader(res.headers, 'content-encoding');
 
@@ -42,7 +42,7 @@ export async function getLatestSpec(
           return;
         }
 
-        reader.on('data', chunk => {
+        reader.on('data', (chunk) => {
           data.push(chunk);
         });
 
@@ -50,9 +50,7 @@ export async function getLatestSpec(
           try {
             const str = Buffer.concat(data).toString();
             const obj = JSON.parse(str);
-            resolve(
-              validate ? assertValid(obj, validateCloudFormationSpec) : obj,
-            );
+            resolve(validate ? assert(decodeCloudFormationSpec, obj) : obj);
           } catch (err) {
             reject(err);
           }

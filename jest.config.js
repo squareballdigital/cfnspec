@@ -2,6 +2,9 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
+  testPathIgnorePatterns: ['/node_modules/', '/lib/', '/build/', '/dist/'],
+  testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
+  transform: { '\\.[jt]sx?$': '@sucrase/jest-plugin' },
+  transformIgnorePatterns: ['/node_modules/(?!(lodash-es)/)'],
 };
