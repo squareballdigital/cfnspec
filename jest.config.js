@@ -1,7 +1,7 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
-module.exports = {
+export default {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/lib/', '/build/', '/dist/'],
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
