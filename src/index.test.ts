@@ -1,7 +1,7 @@
 import { ExtraFields } from '@fmtk/decoders';
 import 'jest';
-import { DefaultSpecUrl, getLatestSpec } from '.';
-import { decodeCloudFormationSpec } from './CloudFormationSpec';
+import { decodeCloudFormationSpec } from './CloudFormationSpec.js';
+import { DefaultSpecUrl, getLatestSpec } from './getLatestSpec.js';
 
 describe('getLatestSpec', () => {
   it('it validates the current spec without failing', async () => {
