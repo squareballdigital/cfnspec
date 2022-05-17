@@ -1,4 +1,4 @@
-# @fmtk/cfnspec
+# @squareball/cfnspec
 
 This package retrieves and validates the AWS CloudFormation Resource Specification, and provides TypeScript types for the specification.
 

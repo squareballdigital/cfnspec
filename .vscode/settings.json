@@ -4,5 +4,8 @@
       "source.organizeImports": true
     }
   },
-  "typescript.preferences.importModuleSpecifierEnding": "js"
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///Users/gordonmleigh/Projects/squareballdigital/cfnspec/.github/workflows/build.yml"
+  }
 }
